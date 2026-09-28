@@ -95,49 +95,49 @@
 
 ### `Dockerfile`
 
-- [ ] Chuyển thành multi-stage build có stage đặt tên (ví dụ `builder`) và
+- [x] Chuyển thành multi-stage build có stage đặt tên (ví dụ `builder`) và
   stage runtime riêng.
-- [ ] Dùng base image gọn như `python:3.11-slim` hoặc Alpine.
-- [ ] Stage builder cài dependency; runtime chỉ copy kết quả cần thiết, không
+- [x] Dùng base image gọn như `python:3.11-slim` hoặc Alpine.
+- [x] Stage builder cài dependency; runtime chỉ copy kết quả cần thiết, không
   mang compiler/build tools sang image cuối.
-- [ ] `COPY requirements.txt` rồi `pip install` **trước** khi copy source để tận
+- [x] `COPY requirements.txt` rồi `pip install` **trước** khi copy source để tận
   dụng layer cache.
-- [ ] Copy đủ `app/` và `utils/` vào runtime image.
-- [ ] Tạo user thường (ví dụ UID 10001) và dùng `USER`; container cuối không
+- [x] Copy đủ `app/` và `utils/` vào runtime image.
+- [x] Tạo user thường (ví dụ UID 10001) và dùng `USER`; container cuối không
   chạy bằng root.
-- [ ] Thêm `HEALTHCHECK` gọi `/health`.
-- [ ] Uvicorn bind `0.0.0.0`.
-- [ ] Đọc cổng từ `${PORT:-8000}`, không cố định cổng production.
-- [ ] Không chứa `AGENT_API_KEY` hoặc bất kỳ secret hardcode nào.
-- [ ] Build thành công và image cuối nhỏ hơn 500 MB.
+- [x] Thêm `HEALTHCHECK` gọi `/health`.
+- [x] Uvicorn bind `0.0.0.0`.
+- [x] Đọc cổng từ `${PORT:-8000}`, không cố định cổng production.
+- [x] Không chứa `AGENT_API_KEY` hoặc bất kỳ secret hardcode nào.
+- [x] Build thành công và image cuối nhỏ hơn 500 MB.
 
 ### `.dockerignore`
 
-- [ ] Bổ sung tối thiểu `.env`, `__pycache__`, `.git`, `.venv`.
-- [ ] Không ignore nhầm `app`, `utils` hoặc `requirements.txt`.
+- [x] Bổ sung tối thiểu `.env`, `__pycache__`, `.git`, `.venv`.
+- [x] Không ignore nhầm `app`, `utils` hoặc `requirements.txt`.
 
 ### `docker-compose.yml`
 
-- [ ] Giữ service `redis` và bổ sung service `agent`.
-- [ ] `agent` build từ Dockerfile trong repo.
-- [ ] Map cổng `8000:8000`.
-- [ ] Truyền `AGENT_API_KEY: ${AGENT_API_KEY}`, không viết thẳng secret.
-- [ ] Đặt `REDIS_URL=redis://redis:6379/0`, không dùng localhost trong container.
-- [ ] Cho `agent` phụ thuộc `redis`.
-- [ ] Thêm healthcheck gọi `/health` cho `agent`.
+- [x] Giữ service `redis` và bổ sung service `agent`.
+- [x] `agent` build từ Dockerfile trong repo.
+- [x] Map cổng `8000:8000`.
+- [x] Truyền `AGENT_API_KEY: ${AGENT_API_KEY}`, không viết thẳng secret.
+- [x] Đặt `REDIS_URL=redis://redis:6379/0`, không dùng localhost trong container.
+- [x] Cho `agent` phụ thuộc `redis`.
+- [x] Thêm healthcheck gọi `/health` cho `agent`.
 
 ### Kiểm tra CP2
 
-- [ ] Chạy kiểm tra cấu trúc nhanh:
+- [x] Chạy kiểm tra cấu trúc nhanh:
   `pytest tests/test_cp2.py -v -m "not docker"`.
-- [ ] Chạy `docker build -t day12-agent:prod .` thành công.
-- [ ] Dùng `docker images day12-agent:prod` xác nhận image dưới 500 MB.
-- [ ] Chạy `docker compose up -d`, kiểm tra `docker compose ps`, log của agent
+- [x] Chạy `docker build -t day12-agent:prod .` thành công.
+- [x] Dùng `docker images day12-agent:prod` xác nhận image dưới 500 MB.
+- [x] Chạy `docker compose up -d`, kiểm tra `docker compose ps`, log của agent
   và gọi `http://localhost:8000/health` thành công.
-- [ ] Chạy đầy đủ `pytest tests/test_cp2.py -v` khi Docker daemon đang bật.
-- [ ] Có thể giải thích: multi-stage, layer cache, network giữa container, rủi
+- [x] Chạy đầy đủ `pytest tests/test_cp2.py -v` khi Docker daemon đang bật.
+- [x] Có thể giải thích: multi-stage, layer cache, network giữa container, rủi
   ro chạy root và nguy cơ secret lọt vào build context.
-- [ ] Commit checkpoint 2.
+- [x] Commit checkpoint 2.
 
 ## 4. CP3 — API Security (20 điểm)
 

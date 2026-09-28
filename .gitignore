@@ -20,6 +20,7 @@ Thumbs.db
 
 # Logs
 *.log
+*.patch
 
 # Tài liệu nội bộ của giảng viên — không đẩy lên repo phát cho học viên
 solution/
