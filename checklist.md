@@ -194,40 +194,40 @@
 
 ### `app/store.py`
 
-- [ ] Lưu toàn bộ history trong Redis, không dùng dict/global state trong process.
-- [ ] `ping()` trả true khi Redis sống; bắt mọi exception và trả false khi lỗi.
-- [ ] `append()` lưu JSON Unicode gồm `role` và `content` vào Redis List.
-- [ ] `ltrim(key, -HISTORY_MAX_MESSAGES, -1)` để chỉ giữ 20 message mới nhất.
-- [ ] Đặt TTL 7 ngày cho history.
-- [ ] `get_history()` đọc theo thứ tự cũ đến mới, parse JSON và trả list rỗng
+- [x] Lưu toàn bộ history trong Redis, không dùng dict/global state trong process.
+- [x] `ping()` trả true khi Redis sống; bắt mọi exception và trả false khi lỗi.
+- [x] `append()` lưu JSON Unicode gồm `role` và `content` vào Redis List.
+- [x] `ltrim(key, -HISTORY_MAX_MESSAGES, -1)` để chỉ giữ 20 message mới nhất.
+- [x] Đặt TTL 7 ngày cho history.
+- [x] `get_history()` đọc theo thứ tự cũ đến mới, parse JSON và trả list rỗng
   khi chưa có dữ liệu.
-- [ ] Mỗi user có history riêng; history được dùng lại giữa các request.
+- [x] Mỗi user có history riêng; history được dùng lại giữa các request.
 
 ### `/ready` và trạng thái shutdown
 
-- [ ] Redis sống: `/ready` trả 200 với `status: ready`, `redis: true`.
-- [ ] Redis lỗi: `/ready` trả 503 với `status: not ready`, `redis: false`.
-- [ ] Đang shutdown: cả `/health` và `/ready` trả 503 `shutting_down`.
-- [ ] Giữ `/health` và `/ready` tách biệt đúng vai trò liveness/readiness.
+- [x] Redis sống: `/ready` trả 200 với `status: ready`, `redis: true`.
+- [x] Redis lỗi: `/ready` trả 503 với `status: not ready`, `redis: false`.
+- [x] Đang shutdown: cả `/health` và `/ready` trả 503 `shutting_down`.
+- [x] Giữ `/health` và `/ready` tách biệt đúng vai trò liveness/readiness.
 
 ### `app/lifecycle.py`
 
-- [ ] `request_shutdown()` chỉ bật cờ `shutting_down` và gọi lại handler cũ
+- [x] `request_shutdown()` chỉ bật cờ `shutting_down` và gọi lại handler cũ
   nếu handler đó callable.
-- [ ] `install()` lưu handler cũ rồi đăng ký handler mới cho cả SIGTERM và
+- [x] `install()` lưu handler cũ rồi đăng ký handler mới cho cả SIGTERM và
   SIGINT.
-- [ ] Không làm I/O hoặc công việc nặng trong signal handler.
+- [x] Không làm I/O hoặc công việc nặng trong signal handler.
 
 ### Kiểm tra CP4
 
-- [ ] Chạy `pytest tests/test_cp4.py -v` và sửa đến khi xanh toàn bộ.
-- [ ] Chạy nhiều instance bằng Docker Compose và xác nhận history dùng chung:
+- [x] Chạy `pytest tests/test_cp4.py -v` và sửa đến khi xanh toàn bộ.
+- [x] Chạy nhiều instance bằng Docker Compose và xác nhận history dùng chung:
   `docker compose up -d --scale agent=3`.
-- [ ] Gọi `/ask` nhiều lần cùng `X-User-Id`; `history_length` phải tăng nhất
+- [x] Gọi `/ask` nhiều lần cùng `X-User-Id`; `history_length` phải tăng nhất
   quán dù request có thể vào instance khác nhau.
-- [ ] Có thể giải thích: stateless service, giới hạn/TTL history, khác biệt giữa
+- [x] Có thể giải thích: stateless service, giới hạn/TTL history, khác biệt giữa
   liveness và readiness, và cách graceful shutdown tránh rớt request.
-- [ ] Commit checkpoint 4.
+- [x] Commit checkpoint 4.
 
 ## 6. CP5 — Deploy cloud (15 điểm)
 
