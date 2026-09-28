@@ -143,52 +143,52 @@
 
 ### `app/auth.py`
 
-- [ ] Đọc khóa đúng từ `get_settings().agent_api_key`.
-- [ ] Thiếu hoặc sai header `X-API-Key` trả HTTP 401 với thông báo phù hợp.
-- [ ] So sánh khóa bằng `secrets.compare_digest`, không dùng `==`.
-- [ ] Khóa đúng thì trả `X-User-Id`; nếu thiếu user ID thì trả
+- [x] Đọc khóa đúng từ `get_settings().agent_api_key`.
+- [x] Thiếu hoặc sai header `X-API-Key` trả HTTP 401 với thông báo phù hợp.
+- [x] So sánh khóa bằng `secrets.compare_digest`, không dùng `==`.
+- [x] Khóa đúng thì trả `X-User-Id`; nếu thiếu user ID thì trả
   `ANONYMOUS_USER`.
 
 ### `app/rate_limiter.py`
 
-- [ ] Cài sliding window 60 giây bằng Redis Sorted Set, key riêng theo user.
-- [ ] `hit_count()` xóa entry hết hạn bằng `zremrangebyscore` rồi đếm `zcard`.
-- [ ] `check()` kiểm tra quota **trước**, ghi nhận request **sau**.
-- [ ] Vượt giới hạn trả HTTP 429 và header `Retry-After: 60`.
-- [ ] Member ZSET là duy nhất cho mỗi request (timestamp + UUID).
-- [ ] Đặt TTL 60 giây cho key.
-- [ ] Hỗ trợ tham số `now` để kiểm thử cửa sổ trượt chính xác.
+- [x] Cài sliding window 60 giây bằng Redis Sorted Set, key riêng theo user.
+- [x] `hit_count()` xóa entry hết hạn bằng `zremrangebyscore` rồi đếm `zcard`.
+- [x] `check()` kiểm tra quota **trước**, ghi nhận request **sau**.
+- [x] Vượt giới hạn trả HTTP 429 và header `Retry-After: 60`.
+- [x] Member ZSET là duy nhất cho mỗi request (timestamp + UUID).
+- [x] Đặt TTL 60 giây cho key.
+- [x] Hỗ trợ tham số `now` để kiểm thử cửa sổ trượt chính xác.
 
 ### `app/cost_guard.py`
 
-- [ ] Dùng key `cost:<user>:<YYYY-MM>` để tách user và tự reset theo tháng.
-- [ ] `spent()` trả `0.0` khi key chưa tồn tại và ép dữ liệu Redis về float.
-- [ ] `check()` chặn HTTP 402 khi `spent + estimated_cost > budget`.
-- [ ] `record()` cộng dồn bằng `incrbyfloat`, trả tổng mới và đặt TTL khoảng
+- [x] Dùng key `cost:<user>:<YYYY-MM>` để tách user và tự reset theo tháng.
+- [x] `spent()` trả `0.0` khi key chưa tồn tại và ép dữ liệu Redis về float.
+- [x] `check()` chặn HTTP 402 khi `spent + estimated_cost > budget`.
+- [x] `record()` cộng dồn bằng `incrbyfloat`, trả tổng mới và đặt TTL khoảng
   40 ngày.
 
 ### `/ask` trong `app/main.py`
 
-- [ ] Áp dụng auth dependency trước mọi xử lý khác.
-- [ ] Thực hiện đúng thứ tự:
+- [x] Áp dụng auth dependency trước mọi xử lý khác.
+- [x] Thực hiện đúng thứ tự:
   `limiter.check` → `guard.check` → đọc history → gọi mock LLM → lưu message
   user và assistant → ghi chi phí → ghi log.
-- [ ] Không gọi LLM nếu auth/rate limit/cost guard đã chặn request.
-- [ ] Response có đủ `answer`, `user_id`, `history_length`, `cost_usd` và
+- [x] Không gọi LLM nếu auth/rate limit/cost guard đã chặn request.
+- [x] Response có đủ `answer`, `user_id`, `history_length`, `cost_usd` và
   `tokens.in`/`tokens.out`.
-- [ ] Câu hỏi rỗng bị Pydantic chặn với HTTP 422.
-- [ ] Log `ask_completed` có user, token vào/ra và chi phí.
+- [x] Câu hỏi rỗng bị Pydantic chặn với HTTP 422.
+- [x] Log `ask_completed` có user, token vào/ra và chi phí.
 
 ### Kiểm tra CP3
 
-- [ ] Chạy `pytest tests/test_cp3.py -v` và sửa đến khi xanh toàn bộ.
-- [ ] Curl không key/sai key được 401; key đúng được 200.
-- [ ] Gọi quá hạn mức được 429; user khác có quota riêng.
-- [ ] Test cost guard được 402 khi vượt ngân sách và có ghi nhận chi phí sau
+- [x] Chạy `pytest tests/test_cp3.py -v` và sửa đến khi xanh toàn bộ.
+- [x] Curl không key/sai key được 401; key đúng được 200.
+- [x] Gọi quá hạn mức được 429; user khác có quota riêng.
+- [x] Test cost guard được 402 khi vượt ngân sách và có ghi nhận chi phí sau
   request thành công.
-- [ ] Có thể giải thích: 401/402/429, timing attack, sliding window, member duy
+- [x] Có thể giải thích: 401/402/429, timing attack, sliding window, member duy
   nhất và khác biệt giữa rate limit với budget limit.
-- [ ] Commit checkpoint 3.
+- [x] Commit checkpoint 3.
 
 ## 5. CP4 — Scaling và Reliability (20 điểm)
 
