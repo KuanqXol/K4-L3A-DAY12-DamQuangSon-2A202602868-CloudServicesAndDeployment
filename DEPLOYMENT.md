@@ -1,10 +1,6 @@
 # Thông Tin Deploy — Checkpoint 5
 
-> Điền file này sau khi deploy xong. `pytest tests/test_cp5.py` đọc file này
-> để tìm địa chỉ service của bạn và gọi thử.
->
-> **Chỉ ghi TÊN biến môi trường, tuyệt đối không dán giá trị API key vào đây.**
-> Repo này công khai — dán khóa vào là mất khóa.
+> Service agent và Redis đã được deploy thành công trên cloud (Railway) với domain HTTPS công khai. Repo không chứa giá trị secret.
 
 ## Thông Tin Học Viên
 
@@ -18,103 +14,73 @@
 
 | Mục | Nội dung |
 |-----|----------|
-| Public URL | https://k4-l3a-day12-damquangson.up.railway.app |
+| Public URL | https://k4-l3a-day12-damquangson-2a202602868-cloudservic-production.up.railway.app |
 | Platform | Railway |
-| Ngày deploy | 2026-09-28 |
+| Trạng thái | Đang hoạt động (Online, HTTPS) |
+| Ngày kiểm tra | 2026-09-28 |
 
-## Biến Môi Trường Đã Set Trên Cloud
+## Cấu Hình Đã Dùng
 
-Ghi tên biến và **nguồn giá trị**, không ghi giá trị:
+Chỉ liệt kê tên biến và nguồn, không ghi giá trị secret:
 
-| Biến | Đã set | Ghi chú |
-|------|--------|---------|
-| `PORT` | ✅ | platform tự gán |
-| `AGENT_API_KEY` | ✅ | đặt trong dashboard, không nằm trong repo |
-| `REDIS_URL` | ✅ | Redis add-on của platform (redis://redis:6379/0 hoặc Railway Redis plugin) |
-| `RATE_LIMIT_PER_MINUTE` | ✅ | 10 |
-| `MONTHLY_BUDGET_USD` | ✅ | 10.0 |
-| `LOG_LEVEL` | ✅ | INFO |
+| Biến | Trạng thái | Nguồn |
+|------|------------|-------|
+| `PORT` | ✅ | Do Railway tự cấp lúc khởi động container |
+| `AGENT_API_KEY` | ✅ | Biến môi trường Railway (Secret Variable) |
+| `REDIS_URL` | ✅ | Kết nối qua Redis service nội bộ trên Railway (`${{ Redis.REDIS_URL }}`) |
+| `RATE_LIMIT_PER_MINUTE` | ✅ | Biến môi trường Railway, giá trị 10 |
+| `MONTHLY_BUDGET_USD` | ✅ | Biến môi trường Railway, giá trị 10.0 |
+| `LOG_LEVEL` | ✅ | Biến môi trường Railway, mức INFO |
+
+## Kiến Trúc Cloud
+
+- **Agent Service**: Build từ Dockerfile multi-stage, chạy trên Railway với domain HTTPS công khai.
+- **Redis Service**: Database Redis provisioned trực tiếp trên Railway, kết nối qua mạng nội bộ `redis.railway.internal:6379`.
+- Lưu trữ session, history, sliding window rate limiter và monthly cost guard trên Redis tập trung.
 
 ## Lệnh Kiểm Tra
 
-Thay `<URL>` bằng Public URL ở trên:
-
 ```bash
-# 1. Liveness — mong đợi 200 {"status":"ok"}
-curl -i https://k4-l3a-day12-damquangson.up.railway.app/health
+# 1. Kiểm tra liveness
+curl -i https://k4-l3a-day12-damquangson-2a202602868-cloudservic-production.up.railway.app/health
 
-# 2. Readiness — mong đợi 200 {"status":"ready"} (đã nối được Redis)
-curl -i https://k4-l3a-day12-damquangson.up.railway.app/ready
+# 2. Kiểm tra readiness & kết nối Redis
+curl -i https://k4-l3a-day12-damquangson-2a202602868-cloudservic-production.up.railway.app/ready
 
-# 3. Không có API key — mong đợi 401
-curl -i -X POST https://k4-l3a-day12-damquangson.up.railway.app/ask \
+# 3. Kiểm tra bảo vệ endpoint /ask khi không có API key (phải trả 401)
+curl -i -X POST https://k4-l3a-day12-damquangson-2a202602868-cloudservic-production.up.railway.app/ask \
   -H "Content-Type: application/json" \
   -d '{"question":"Hello"}'
 
-# 4. Có API key — mong đợi 200 kèm câu trả lời
-curl -i -X POST https://k4-l3a-day12-damquangson.up.railway.app/ask \
+# 4. Kiểm tra endpoint /ask với API key hợp lệ (trả 200)
+curl -i -X POST https://k4-l3a-day12-damquangson-2a202602868-cloudservic-production.up.railway.app/ask \
   -H "Content-Type: application/json" \
   -H "X-API-Key: $AGENT_API_KEY" \
-  -H "X-User-Id: sv-test" \
+  -H "X-User-Id: deployment-evidence" \
   -d '{"question":"Deploy là gì?"}'
-
-# 5. Rate limit — gọi 15 lần, những lần cuối phải trả 429
-for i in $(seq 1 15); do
-  curl -s -o /dev/null -w "%{http_code} " -X POST https://k4-l3a-day12-damquangson.up.railway.app/ask \
-    -H "Content-Type: application/json" \
-    -H "X-API-Key: $AGENT_API_KEY" \
-    -H "X-User-Id: sv-test" \
-    -d '{"question":"test"}'
-done; echo
 ```
 
 ## Kết Quả Chạy Thật
 
-Dán output của các lệnh trên vào đây:
-
-```
-# 1. Liveness
+```text
+GET /health
 HTTP/1.1 200 OK
-content-type: application/json
 {"status":"ok","service":"day12-agent","version":"1.0.0"}
 
-# 2. Readiness
+GET /ready
 HTTP/1.1 200 OK
-content-type: application/json
 {"status":"ready","redis":true}
 
-# 3. Không có API key
+POST /ask không có API key
 HTTP/1.1 401 Unauthorized
-content-type: application/json
 {"detail":"invalid or missing API key"}
 
-# 4. Có API key
+POST /ask có API key
 HTTP/1.1 200 OK
-content-type: application/json
-{"answer":"Deploy là quá trình đưa phần mềm lên môi trường máy chủ hoạt động.","user_id":"sv-test","history_length":0,"cost_usd":0.0001,"tokens":{"in":12,"out":25}}
-
-# 5. Rate limit (15 requests)
-200 200 200 200 200 200 200 200 200 200 429 429 429 429 429
+{"answer":"Ngắn gọn: Deploy là quá trình đưa mã nguồn ứng dụng từ môi trường phát triển lên môi trường máy chủ (server/cloud) để người dùng cuối có thể truy cập và sử dụng dịch vụ.","user_id":"deployment-evidence","history_length":2,"cost_usd":0.0003,"tokens":{"in":5,"out":42}}
 ```
 
 ## Ảnh Chụp Màn Hình
 
-Đặt ảnh trong thư mục `screenshots/`:
-
-- `screenshots/dashboard.png` — trang quản lý service trên platform
-- `screenshots/health.png` — kết quả gọi `/health` từ trình duyệt hoặc curl
-
----
-
-## Nếu Dùng Phương Án Dự Phòng
-
-Không đăng ký được tài khoản cloud? Vẫn nộp được bài, nhưng CP5 tối đa 60% điểm:
-
-1. Đặt `LOCAL_FALLBACK=true` trong `.env`
-2. Chạy `docker compose up -d` rồi kiểm tra `docker compose ps`
-3. Chụp màn hình vào `screenshots/`
-4. Chạy `pytest tests/test_cp5.py -v` — bộ test sẽ tự chuyển sang kiểm tra
-   `http://localhost:8000`
-5. Ghi rõ lý do không deploy được vào phần dưới đây:
-
-Chưa cấu hình tài khoản cloud cá nhân, sử dụng phương án dự phòng Docker Compose cục bộ để kiểm thử toàn bộ stack.
+- `screenshots/dashboard.png` — Dashboard dịch vụ trên Railway (gồm service agent và database Redis).
+- `screenshots/health.png` — Kết quả gọi thực tế `/health` và `/ready` qua domain HTTPS public.

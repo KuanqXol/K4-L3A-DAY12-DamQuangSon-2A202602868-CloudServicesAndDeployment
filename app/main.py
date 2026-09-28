@@ -77,7 +77,7 @@ class AskRequest(BaseModel):
 def health():
     """Liveness probe — process còn sống không?
 
-    TODO (CP1 + CP4):
+    Hành vi CP1 + CP4:
       - Đang tắt dần (``lifecycle.shutting_down``) → trả
         ``JSONResponse(status_code=503, content={"status": "shutting_down"})``
       - Bình thường → ``{"status": "ok", "service": SERVICE_NAME,
