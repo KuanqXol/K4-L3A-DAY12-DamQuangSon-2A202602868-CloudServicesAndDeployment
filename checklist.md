@@ -55,41 +55,41 @@
 
 ### `app/config.py`
 
-- [ ] Khai báo đủ 6 trường trong `Settings`:
-  - [ ] `port: int = 8000`
-  - [ ] `agent_api_key: str` — bắt buộc, **không có mặc định**.
-  - [ ] `redis_url: str = "redis://localhost:6379/0"`
-  - [ ] `rate_limit_per_minute: int = 10`
-  - [ ] `monthly_budget_usd: float = 10.0`
-  - [ ] `log_level: str = "INFO"`
-- [ ] Bảo đảm cấu hình đọc từ environment/`.env`, thay biến môi trường thì giá
+- [x] Khai báo đủ 6 trường trong `Settings`:
+  - [x] `port: int = 8000`
+  - [x] `agent_api_key: str` — bắt buộc, **không có mặc định**.
+  - [x] `redis_url: str = "redis://localhost:6379/0"`
+  - [x] `rate_limit_per_minute: int = 10`
+  - [x] `monthly_budget_usd: float = 10.0`
+  - [x] `log_level: str = "INFO"`
+- [x] Bảo đảm cấu hình đọc từ environment/`.env`, thay biến môi trường thì giá
   trị thay đổi mà không sửa code.
-- [ ] Bảo đảm thiếu `AGENT_API_KEY` làm app fail fast khi khởi động.
-- [ ] Không hardcode secret trong `config.py`, `main.py` hoặc `auth.py`.
+- [x] Bảo đảm thiếu `AGENT_API_KEY` làm app fail fast khi khởi động.
+- [x] Không hardcode secret trong `config.py`, `main.py` hoặc `auth.py`.
 
 ### `app/logging_utils.py`
 
-- [ ] Cài `log_event()` để tạo, in ra stdout và trả về một chuỗi JSON hợp lệ.
-- [ ] Mỗi log chỉ nằm trên **một dòng**, không dùng `indent`.
-- [ ] Log luôn có `event`, `level` viết thường và timestamp ISO-8601 UTC.
-- [ ] Gộp đầy đủ các trường tùy ý từ `**fields`.
-- [ ] Dùng `ensure_ascii=False` để giữ đúng Unicode/tiếng Việt.
+- [x] Cài `log_event()` để tạo, in ra stdout và trả về một chuỗi JSON hợp lệ.
+- [x] Mỗi log chỉ nằm trên **một dòng**, không dùng `indent`.
+- [x] Log luôn có `event`, `level` viết thường và timestamp ISO-8601 UTC.
+- [x] Gộp đầy đủ các trường tùy ý từ `**fields`.
+- [x] Dùng `ensure_ascii=False` để giữ đúng Unicode/tiếng Việt.
 
 ### `/health` trong `app/main.py`
 
-- [ ] Bình thường trả HTTP 200 cùng `status: ok`, tên service và version.
-- [ ] Khi `lifecycle.shutting_down` là true, trả HTTP 503 với
+- [x] Bình thường trả HTTP 200 cùng `status: ok`, tên service và version.
+- [x] Khi `lifecycle.shutting_down` là true, trả HTTP 503 với
   `{"status": "shutting_down"}`.
-- [ ] Không yêu cầu API key.
-- [ ] Không nhận dependency và không gọi Redis/database/dịch vụ ngoài.
+- [x] Không yêu cầu API key.
+- [x] Không nhận dependency và không gọi Redis/database/dịch vụ ngoài.
 
 ### Kiểm tra CP1
 
-- [ ] Chạy `pytest tests/test_cp1.py -v` và sửa đến khi xanh toàn bộ.
-- [ ] Chạy app bằng Uvicorn và gọi thật `GET /health`.
-- [ ] Có thể giải thích: 12-Factor config, fail fast, JSON log một dòng và lý do
+- [x] Chạy `pytest tests/test_cp1.py -v` và sửa đến khi xanh toàn bộ.
+- [x] Chạy app bằng Uvicorn và gọi thật `GET /health`.
+- [x] Có thể giải thích: 12-Factor config, fail fast, JSON log một dòng và lý do
   liveness không kiểm tra Redis.
-- [ ] Commit checkpoint 1.
+- [x] Commit checkpoint 1.
 
 ## 3. CP2 — Docker production-ready (15 điểm)
 
