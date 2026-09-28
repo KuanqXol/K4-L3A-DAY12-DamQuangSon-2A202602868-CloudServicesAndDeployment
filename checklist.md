@@ -259,79 +259,79 @@
 
 ### Hoàn thiện bằng chứng
 
-- [ ] Điền `DEPLOYMENT.md`, xóa toàn bộ placeholder `(điền...)`, `TODO`, URL mẫu.
-- [ ] Điền họ tên, MSSV và link repo đúng.
-- [ ] Điền Public URL HTTPS, platform và ngày deploy.
-- [ ] Liệt kê **tên** và nguồn các biến môi trường; không ghi giá trị secret.
-- [ ] Dán output thực của các lệnh kiểm tra vào `DEPLOYMENT.md`.
-- [ ] Thêm `screenshots/dashboard.png` — dashboard của service.
-- [ ] Thêm `screenshots/health.png` — kết quả gọi `/health`.
-- [ ] Chạy `pytest tests/test_cp5.py -v` và sửa đến khi đạt.
-- [ ] Có thể giải thích `$PORT`, secret store, build/runtime log, health/readiness
+- [x] Điền `DEPLOYMENT.md`, xóa toàn bộ placeholder `(điền...)`, `TODO`, URL mẫu.
+- [x] Điền họ tên, MSSV và link repo đúng.
+- [x] Điền Public URL HTTPS, platform và ngày deploy.
+- [x] Liệt kê **tên** và nguồn các biến môi trường; không ghi giá trị secret.
+- [x] Dán output thực của các lệnh kiểm tra vào `DEPLOYMENT.md`.
+- [x] Thêm `screenshots/dashboard.png` — dashboard của service.
+- [x] Thêm `screenshots/health.png` — kết quả gọi `/health`.
+- [x] Chạy `pytest tests/test_cp5.py -v` và sửa đến khi đạt.
+- [x] Có thể giải thích `$PORT`, secret store, build/runtime log, health/readiness
   và lỗi thực tế đã gặp khi deploy.
-- [ ] Commit checkpoint 5.
+- [x] Commit checkpoint 5.
 
 ### Phương án dự phòng nếu không thể dùng cloud
 
-- [ ] Chỉ dùng khi thực sự không deploy được; hiểu rằng CP5 tối đa 9/15 điểm.
-- [ ] Đặt `LOCAL_FALLBACK=true` trong `.env` cục bộ.
-- [ ] Chạy `docker compose up -d` và xác nhận stack healthy.
-- [ ] Chụp ít nhất một ảnh trong `screenshots/` có `docker compose ps` và kết
+- [x] Chỉ dùng khi thực sự không deploy được; hiểu rằng CP5 tối đa 9/15 điểm.
+- [x] Đặt `LOCAL_FALLBACK=true` trong `.env` cục bộ.
+- [x] Chạy `docker compose up -d` và xác nhận stack healthy.
+- [x] Chụp ít nhất một ảnh trong `screenshots/` có `docker compose ps` và kết
   quả gọi API.
-- [ ] Ghi rõ lý do không deploy được trong `DEPLOYMENT.md`.
-- [ ] Chạy lại `pytest tests/test_cp5.py -v` ở fallback mode.
+- [x] Ghi rõ lý do không deploy được trong `DEPLOYMENT.md`.
+- [x] Chạy lại `pytest tests/test_cp5.py -v` ở fallback mode.
 
 ## 7. Hoàn thành `exercises.md` (15 điểm)
 
-- [ ] Điền họ tên và mã học viên.
-- [ ] Trả lời đủ 10 câu bằng lời của chính mình, dựa trên output/quan sát thật:
-  - [ ] Câu 1: tình huống fail fast cứu hệ thống khi thiếu API key.
-  - [ ] Câu 2: một dòng log JSON thật và hai lợi ích so với `print` chung chung.
-  - [ ] Câu 3: số MB thật của image single-stage và multi-stage, giải thích phần
+- [x] Điền họ tên và mã học viên.
+- [x] Trả lời đủ 10 câu bằng lời của chính mình, dựa trên output/quan sát thật:
+  - [x] Câu 1: tình huống fail fast cứu hệ thống khi thiếu API key.
+  - [x] Câu 2: một dòng log JSON thật và hai lợi ích so với `print` chung chung.
+  - [x] Câu 3: số MB thật của image single-stage và multi-stage, giải thích phần
     chênh lệch.
-  - [ ] Câu 4: layer nào cache/tái build sau khi sửa source và tác hại của
+  - [x] Câu 4: layer nào cache/tái build sau khi sửa source và tác hại của
     `COPY . .` trước `pip install`.
-  - [ ] Câu 5: chuỗi rủi ro từ lỗ hổng Python đến quyền root host và vai trò
+  - [x] Câu 5: chuỗi rủi ro từ lỗ hổng Python đến quyền root host và vai trò
     của `USER`.
-  - [ ] Câu 6: số request tối đa trong 2 giây với fixed window 10/phút và cách
+  - [x] Câu 6: số request tối đa trong 2 giây với fixed window 10/phút và cách
     tạo burst đó.
-  - [ ] Câu 7: ví dụ rate limit cho qua nhưng cost guard chặn, và ngược lại.
-  - [ ] Câu 8: chuỗi sự kiện khi gộp health/ready và Redis mất 30 giây trong
+  - [x] Câu 7: ví dụ rate limit cho qua nhưng cost guard chặn, và ngược lại.
+  - [x] Câu 8: chuỗi sự kiện khi gộp health/ready và Redis mất 30 giây trong
     cụm 3 container.
-  - [ ] Câu 9: quan sát `history_length` khi scale 3 instance và so sánh với
+  - [x] Câu 9: quan sát `history_length` khi scale 3 instance và so sánh với
     lưu history trong dict.
-  - [ ] Câu 10: một lỗi deploy thật, thông báo lỗi, cách tìm nguyên nhân và cách sửa.
-- [ ] Không còn dòng `> *Câu trả lời của bạn*` hoặc câu trả lời chung chung.
-- [ ] Có thể giải thích miệng toàn bộ nội dung đã viết.
+  - [x] Câu 10: một lỗi deploy thật, thông báo lỗi, cách tìm nguyên nhân và cách sửa.
+- [x] Không còn dòng `> *Câu trả lời của bạn*` hoặc câu trả lời chung chung.
+- [x] Có thể giải thích miệng toàn bộ nội dung đã viết.
 
 ## 8. Kiểm tra bảo mật và chất lượng trước khi nộp
 
-- [ ] Tìm và xử lý toàn bộ `NotImplementedError` trong `app/`.
-- [ ] Không còn TODO bắt buộc hoặc placeholder trong code/tài liệu nộp.
-- [ ] Chạy toàn bộ test:
+- [x] Tìm và xử lý toàn bộ `NotImplementedError` trong `app/`.
+- [x] Không còn TODO bắt buộc hoặc placeholder trong code/tài liệu nộp.
+- [x] Chạy toàn bộ test:
 
   ```powershell
   pytest tests/ -v
   ```
 
-- [ ] Ghi nhận rõ test nào pass/fail/skip và nguyên nhân; test bị skip vì thiếu
+- [x] Ghi nhận rõ test nào pass/fail/skip và nguyên nhân; test bị skip vì thiếu
   Docker không tự động được xem là đã đạt.
-- [ ] Chạy chấm điểm bắt buộc: `python grade.py --no-bonus`.
-- [ ] Chạy chấm điểm đầy đủ: `python grade.py`.
-- [ ] Mục tiêu ít nhất 75/100; ưu tiên làm xanh toàn bộ phần bắt buộc.
-- [ ] Kiểm tra Git không theo dõi `.env` hoặc key/private key:
+- [x] Chạy chấm điểm bắt buộc: `python grade.py --no-bonus`.
+- [x] Chạy chấm điểm đầy đủ: `python grade.py`.
+- [x] Mục tiêu ít nhất 75/100; ưu tiên làm xanh toàn bộ phần bắt buộc.
+- [x] Kiểm tra Git không theo dõi `.env` hoặc key/private key:
 
   ```powershell
   git status --short
   git ls-files | Select-String -Pattern '(^|/)\.env$|\.(pem|key)$'
   ```
 
-- [ ] Kết quả kiểm tra chỉ có thể chứa `.env.example`, không có `.env` thật.
-- [ ] Quét repo/lịch sử để chắc chắn không có API key, token hay mật khẩu thật.
-- [ ] Kiểm tra `DEPLOYMENT.md` không chứa secret và không còn placeholder.
-- [ ] Kiểm tra đủ source `app/`, `utils/`, Dockerfile, Compose, `.dockerignore`,
+- [x] Kết quả kiểm tra chỉ có thể chứa `.env.example`, không có `.env` thật.
+- [x] Quét repo/lịch sử để chắc chắn không có API key, token hay mật khẩu thật.
+- [x] Kiểm tra `DEPLOYMENT.md` không chứa secret và không còn placeholder.
+- [x] Kiểm tra đủ source `app/`, `utils/`, Dockerfile, Compose, `.dockerignore`,
   file deploy, test, grade script, exercises và screenshots.
-- [ ] Đọc lại code và chuẩn bị giải thích mọi phần khi Lab Coach hỏi.
+- [x] Đọc lại code và chuẩn bị giải thích mọi phần khi Lab Coach hỏi.
 
 ## 9. Nộp bài
 
@@ -346,25 +346,25 @@
 > Chỉ bắt đầu sau khi CP1–CP5 và phần bắt buộc đã ổn. Nginx/load balancing là
 > mở rộng kiến thức, không có điểm bonus riêng.
 
-- [ ] Tạo `.github/workflows/ci.yml` (hoặc `.yaml`).
-- [ ] Kích hoạt workflow khi push và pull request vào `main`.
-- [ ] Tạo job test trên runner sạch:
-  - [ ] Checkout code bằng action đã ghim phiên bản, ví dụ `actions/checkout@v4`.
-  - [ ] Setup Python bằng action đã ghim phiên bản.
-  - [ ] Cài `requirements.txt`.
-  - [ ] Truyền `AGENT_API_KEY=ci-dummy` và `REDIS_URL=fake://` qua `env`.
-  - [ ] Chạy pytest nhưng loại `test_cp5.py` và `test_bonus_cicd.py` khỏi CI.
-- [ ] Tạo job/bước build Docker image trên GitHub runner.
-- [ ] Tạo job deploy thật.
-- [ ] Dùng `needs` để deploy chỉ chạy sau khi cả test và build xanh.
-- [ ] Dùng `if` để deploy chỉ chạy khi push vào `main`, không deploy từ pull request.
-- [ ] Lưu Railway token/Render deploy hook trong GitHub Actions Secrets và tham
+- [x] Tạo `.github/workflows/ci.yml` (hoặc `.yaml`).
+- [x] Kích hoạt workflow khi push và pull request vào `main`.
+- [x] Tạo job test trên runner sạch:
+  - [x] Checkout code bằng action đã ghim phiên bản, ví dụ `actions/checkout@v4`.
+  - [x] Setup Python bằng action đã ghim phiên bản.
+  - [x] Cài `requirements.txt`.
+  - [x] Truyền `AGENT_API_KEY=ci-dummy` và `REDIS_URL=fake://` qua `env`.
+  - [x] Chạy pytest nhưng loại `test_cp5.py` và `test_bonus_cicd.py` khỏi CI.
+- [x] Tạo job/bước build Docker image trên GitHub runner.
+- [x] Tạo job deploy thật.
+- [x] Dùng `needs` để deploy chỉ chạy sau khi cả test và build xanh.
+- [x] Dùng `if` để deploy chỉ chạy khi push vào `main`, không deploy từ pull request.
+- [x] Lưu Railway token/Render deploy hook trong GitHub Actions Secrets và tham
   chiếu bằng `${{ secrets.* }}`; không hardcode token.
-- [ ] Lưu giá trị không bí mật như public URL trong GitHub Variables.
-- [ ] Ghim version/SHA cho mọi action; không dùng `@main`, `@master`, `@latest`.
-- [ ] Thêm smoke test sau deploy gọi `${{ vars.PUBLIC_URL }}/health` và làm job
+- [x] Lưu giá trị không bí mật như public URL trong GitHub Variables.
+- [x] Ghim version/SHA cho mọi action; không dùng `@main`, `@master`, `@latest`.
+- [x] Thêm smoke test sau deploy gọi `${{ vars.PUBLIC_URL }}/health` và làm job
   fail nếu HTTP không phải 2xx.
-- [ ] Thêm badge workflow đúng repo/file vào đầu `README.md`.
+- [x] Thêm badge workflow đúng repo/file vào đầu `README.md`.
 - [ ] Push workflow, xem tab Actions và sửa đến khi lần chạy mới nhất xanh.
 - [ ] Xác nhận badge tải được và hiển thị `passing` trên repo public.
 - [ ] Chạy `pytest tests/test_bonus_cicd.py -v` đến khi xanh toàn bộ.
